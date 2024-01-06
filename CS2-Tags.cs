@@ -217,7 +217,13 @@ public class CS2_Tags : BasePlugin
 	private HookResult OnPlayerChat(CCSPlayerController? player, CommandInfo info)
 	{
 		if (player == null || !player.IsValid || info.GetArg(1).Length == 0) return HookResult.Continue;
-		string steamid = player.AuthorizedSteamID!.SteamId64.ToString();
+
+		if (player.AuthorizedSteamID == null) {
+  			Server.PrintToConsole($"[Tags] {player.PlayerName} not authorized... Ignoring.");
+     			return HookResult.Continue;
+  		}
+
+  		string steamid = player.AuthorizedSteamID!.SteamId64.ToString();
 
 		if (GaggedIds.Contains((int)player.Index)) return HookResult.Handled;
 
